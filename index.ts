@@ -41,7 +41,7 @@ export async function startServer() {
     }
   }));
   app.use(cors());
-  app.use(koaCompress());
+  // app.use(koaCompress());
   app.use(koaBody());
 
   const liveCheckRouter = new Router();

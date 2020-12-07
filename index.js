@@ -62,11 +62,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.startServer = void 0;
 var koa_1 = __importDefault(require("koa"));
 var buildInfo = __importStar(require("./package.json"));
-var zlib_1 = __importDefault(require("zlib"));
 var cors_1 = __importDefault(require("@koa/cors"));
 var koa_body_1 = __importDefault(require("koa-body"));
 var koa_logger_1 = __importDefault(require("koa-logger"));
-var koa_compress_1 = __importDefault(require("koa-compress"));
 var log4js_1 = require("log4js");
 var koa_router_1 = __importDefault(require("koa-router"));
 var koa_send_1 = __importDefault(require("koa-send"));
@@ -109,18 +107,7 @@ function startServer() {
                 }
             }));
             app.use(cors_1.default());
-            app.use(koa_compress_1.default({
-                threshold: 2048,
-                gzip: {
-                    flush: zlib_1.default.constants.Z_SYNC_FLUSH
-                },
-                deflate: {
-                    flush: zlib_1.default.constants.Z_SYNC_FLUSH,
-                },
-                br: {
-                    flush: zlib_1.default.constants.BROTLI_OPERATION_FLUSH,
-                }
-            }));
+            // app.use(koaCompress());
             app.use(koa_body_1.default());
             liveCheckRouter = new koa_router_1.default();
             liveCheckRouter.head('/ping', function (ctx) { return ctx.body = 'ok'; });
