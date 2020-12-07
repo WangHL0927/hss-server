@@ -1,5 +1,5 @@
 {
-  "name": "http-server-spa",
+  "name": "hss-server",
   "version": "0.0.1",
   "description": "http server for SPA.",
   "main": "index.js",
