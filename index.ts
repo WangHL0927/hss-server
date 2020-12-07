@@ -2,9 +2,7 @@
 
 import Koa from 'koa';
 import * as buildInfo from './package.json';
-import zlib from "zlib";
 import cors from '@koa/cors';
-import koaBody from 'koa-body';
 import koaLogger from 'koa-logger';
 import koaCompress from 'koa-compress';
 import { getLogger } from 'log4js';
@@ -17,6 +15,7 @@ import path from 'path';
 const argv = minimist(process.argv.slice(2));
 const root = argv.r || argv.root || '.';
 const port = argv.p || argv.port || 80;
+const compress = argv.c || argv.compress || false;
 const index = argv.i || argv.index || 'index.html';
 const page404 = argv.p4 || argv.page404 || 'index.html';
 const max = argv.m || argv.maxage || 7 * 24 * 3600 * 1000; // 7 days
@@ -40,9 +39,13 @@ export async function startServer() {
       logger.info(str);
     }
   }));
+
   app.use(cors());
-  // app.use(koaCompress());
-  app.use(koaBody());
+
+  if (compress) {
+    logger.info('Compress enabled.');
+    app.use(koaCompress());
+  }
 
   const liveCheckRouter = new Router();
   liveCheckRouter.head('/ping', (ctx) => ctx.body = 'ok');
