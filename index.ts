@@ -26,7 +26,7 @@ export async function startServer() {
   const app = new Koa();
   app.use(async (ctx, next) => {
     if (ctx.request.method !== 'HEAD') {
-      logger.info(`client ip -> ${ctx.get('X-Forwarded-For')}`);
+      logger.info(`  <-- IP ${ctx.get('X-Forwarded-For')}`);
     }
     await next();
   });

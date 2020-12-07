@@ -89,7 +89,7 @@ function startServer() {
                     switch (_a.label) {
                         case 0:
                             if (ctx.request.method !== 'HEAD') {
-                                logger.info("client ip -> " + ctx.get('X-Forwarded-For'));
+                                logger.info("  <-- IP " + ctx.get('X-Forwarded-For'));
                             }
                             return [4 /*yield*/, next()];
                         case 1:
