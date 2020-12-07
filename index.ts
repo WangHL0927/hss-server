@@ -41,18 +41,7 @@ export async function startServer() {
     }
   }));
   app.use(cors());
-  app.use(koaCompress({
-    threshold: 2048,
-    gzip: {
-      flush: zlib.constants.Z_SYNC_FLUSH
-    },
-    deflate: {
-      flush: zlib.constants.Z_SYNC_FLUSH,
-    },
-    br: {
-      flush: zlib.constants.BROTLI_OPERATION_FLUSH,
-    }
-  }));
+  app.use(koaCompress());
   app.use(koaBody());
 
   const liveCheckRouter = new Router();
