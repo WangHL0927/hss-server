@@ -1,7 +1,7 @@
 {
   "name": "hss-server",
   "version": "0.0.1",
-  "description": "http server for SPA.",
+  "description": "http server for Single-page application (SPA).",
   "main": "index.js",
   "bin": {
     "hss": "index.js"
@@ -28,9 +28,10 @@
     "tslib": "^2.0.3",
     "typescript": "^4.1.2"
   },
+  "homepage": "https://github.com/WangHL0927/hss-server",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.pi2star.com/opensource/npm/http-server-spa.git"
+    "url": "https://github.com/WangHL0927/hss-server.git"
   },
   "author": "wanghualong",
   "license": "MIT"
