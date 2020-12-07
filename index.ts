@@ -4,21 +4,17 @@ import Koa from 'koa';
 import * as buildInfo from './package.json';
 import cors from '@koa/cors';
 import koaLogger from 'koa-logger';
-import koaCompress from 'koa-compress';
 import { getLogger } from 'log4js';
 import Router from 'koa-router';
 import send from 'koa-send';
 
 import minimist from 'minimist';
-import path from 'path';
 
 const argv = minimist(process.argv.slice(2));
 const root = argv.r || argv.root || '.';
 const port = argv.p || argv.port || 80;
-const compress = argv.c || argv.compress || false;
 const index = argv.i || argv.index || 'index.html';
 const page404 = argv.p4 || argv.page404 || 'index.html';
-const max = argv.m || argv.maxage || 7 * 24 * 3600 * 1000; // 7 days
 
 const logger = getLogger('http');
 logger.level = 'info';
@@ -42,11 +38,6 @@ export async function startServer() {
 
   app.use(cors());
 
-  if (compress) {
-    logger.info('Compress enabled.');
-    app.use(koaCompress());
-  }
-
   const liveCheckRouter = new Router();
   liveCheckRouter.head('/ping', (ctx) => ctx.body = 'ok');
   liveCheckRouter.post('/ping', (ctx) => ctx.body = 'ok');
@@ -58,14 +49,7 @@ export async function startServer() {
     const opts = {
       index: index,
       root: root,
-      maxage: max,
     };
-
-    const ext = path.extname(ctx.path);
-
-    if (ctx.path === '/' || ext === 'html') {
-      opts.maxage = 0; // no cache
-    }
 
     try {
       await send(ctx, ctx.path, opts);

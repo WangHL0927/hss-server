@@ -1,6 +1,6 @@
 {
   "name": "hss-server",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "http server for Single-page application (SPA).",
   "main": "index.js",
   "bin": {

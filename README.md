@@ -30,8 +30,6 @@ hss
 
 -p4   --page404  404 file. default index.html
 
--m    --max      Browser cache max-age in milliseconds. Except .html file.
-
 ```
 
 

@@ -64,19 +64,15 @@ var koa_1 = __importDefault(require("koa"));
 var buildInfo = __importStar(require("./package.json"));
 var cors_1 = __importDefault(require("@koa/cors"));
 var koa_logger_1 = __importDefault(require("koa-logger"));
-var koa_compress_1 = __importDefault(require("koa-compress"));
 var log4js_1 = require("log4js");
 var koa_router_1 = __importDefault(require("koa-router"));
 var koa_send_1 = __importDefault(require("koa-send"));
 var minimist_1 = __importDefault(require("minimist"));
-var path_1 = __importDefault(require("path"));
 var argv = minimist_1.default(process.argv.slice(2));
 var root = argv.r || argv.root || '.';
 var port = argv.p || argv.port || 80;
-var compress = argv.c || argv.compress || false;
 var index = argv.i || argv.index || 'index.html';
 var page404 = argv.p4 || argv.page404 || 'index.html';
-var max = argv.m || argv.maxage || 7 * 24 * 3600 * 1000; // 7 days
 var logger = log4js_1.getLogger('http');
 logger.level = 'info';
 function startServer() {
@@ -108,29 +104,20 @@ function startServer() {
                 }
             }));
             app.use(cors_1.default());
-            if (compress) {
-                logger.info('Compress enabled.');
-                app.use(koa_compress_1.default());
-            }
             liveCheckRouter = new koa_router_1.default();
             liveCheckRouter.head('/ping', function (ctx) { return ctx.body = 'ok'; });
             liveCheckRouter.post('/ping', function (ctx) { return ctx.body = 'ok'; });
             app.use(liveCheckRouter.routes());
             app.use(liveCheckRouter.allowedMethods());
             app.use(function (ctx) { return __awaiter(_this, void 0, void 0, function () {
-                var opts, ext, e_1, e_2;
+                var opts, e_1, e_2;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
                             opts = {
                                 index: index,
                                 root: root,
-                                maxage: max,
                             };
-                            ext = path_1.default.extname(ctx.path);
-                            if (ctx.path === '/' || ext === 'html') {
-                                opts.maxage = 0; // no cache
-                            }
                             _a.label = 1;
                         case 1:
                             _a.trys.push([1, 3, , 8]);
