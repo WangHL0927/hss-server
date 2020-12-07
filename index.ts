@@ -15,7 +15,7 @@ import minimist from 'minimist';
 import path from 'path';
 
 const argv = minimist(process.argv.slice(2));
-const root = path.join(__dirname, (argv.d || '')) || path.join(__dirname, argv.dir || '') || path.join(__dirname, '.');
+const root = path.join(__dirname, (argv.r || '')) || path.join(__dirname, argv.root || '') || path.join(__dirname, '.');
 const port = argv.p || argv.port || 80;
 const index = argv.i || argv.index || 'index.html';
 const page404 = argv.p4 || argv.page404 || 'index.html';
@@ -78,7 +78,6 @@ export async function startServer() {
     try {
       await send(ctx, ctx.path, opts);
     } catch (e) {
-      console.log(e);
       try {
         await send(ctx, page404, opts);
       } catch (e) {
