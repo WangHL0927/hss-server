@@ -73,7 +73,7 @@ var koa_send_1 = __importDefault(require("koa-send"));
 var minimist_1 = __importDefault(require("minimist"));
 var path_1 = __importDefault(require("path"));
 var argv = minimist_1.default(process.argv.slice(2));
-var root = path_1.default.join(__dirname, (argv.d || '')) || path_1.default.join(__dirname, argv.dir || '') || path_1.default.join(__dirname, '.');
+var root = argv.r || argv.root || '.';
 var port = argv.p || argv.port || 80;
 var index = argv.i || argv.index || 'index.html';
 var page404 = argv.p4 || argv.page404 || 'index.html';
@@ -150,7 +150,6 @@ function startServer() {
                             return [3 /*break*/, 8];
                         case 3:
                             e_1 = _a.sent();
-                            console.log(e_1);
                             _a.label = 4;
                         case 4:
                             _a.trys.push([4, 6, , 7]);

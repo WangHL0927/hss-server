@@ -15,7 +15,7 @@ import minimist from 'minimist';
 import path from 'path';
 
 const argv = minimist(process.argv.slice(2));
-const root = path.join(__dirname, (argv.r || '')) || path.join(__dirname, argv.root || '') || path.join(__dirname, '.');
+const root = argv.r || argv.root || '.';
 const port = argv.p || argv.port || 80;
 const index = argv.i || argv.index || 'index.html';
 const page404 = argv.p4 || argv.page404 || 'index.html';
