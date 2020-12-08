@@ -5,7 +5,7 @@
 ## Install
 
 ```bash
-npm i -g git+https://gitlab.pi2star.com/opensource/npm/http-server-spa.git
+npm i -g hss-server
 ```
 
 ## Usage
