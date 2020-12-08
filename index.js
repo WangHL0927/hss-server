@@ -65,7 +65,6 @@ var buildInfo = __importStar(require("./package.json"));
 var cors_1 = __importDefault(require("@koa/cors"));
 var koa_logger_1 = __importDefault(require("koa-logger"));
 var log4js_1 = require("log4js");
-var koa_router_1 = __importDefault(require("koa-router"));
 var koa_send_1 = __importDefault(require("koa-send"));
 var minimist_1 = __importDefault(require("minimist"));
 var argv = minimist_1.default(process.argv.slice(2));
@@ -77,7 +76,7 @@ var logger = log4js_1.getLogger('http');
 logger.level = 'info';
 function startServer() {
     return __awaiter(this, void 0, void 0, function () {
-        var app, liveCheckRouter;
+        var app;
         var _this = this;
         return __generator(this, function (_a) {
             logger.info('Name:', buildInfo.name);
@@ -104,11 +103,6 @@ function startServer() {
                 }
             }));
             app.use(cors_1.default());
-            liveCheckRouter = new koa_router_1.default();
-            liveCheckRouter.head('/ping', function (ctx) { return ctx.body = 'ok'; });
-            liveCheckRouter.post('/ping', function (ctx) { return ctx.body = 'ok'; });
-            app.use(liveCheckRouter.routes());
-            app.use(liveCheckRouter.allowedMethods());
             app.use(function (ctx) { return __awaiter(_this, void 0, void 0, function () {
                 var opts, e_1, e_2;
                 return __generator(this, function (_a) {

@@ -5,7 +5,6 @@ import * as buildInfo from './package.json';
 import cors from '@koa/cors';
 import koaLogger from 'koa-logger';
 import { getLogger } from 'log4js';
-import Router from 'koa-router';
 import send from 'koa-send';
 
 import minimist from 'minimist';
@@ -24,12 +23,14 @@ export async function startServer() {
   logger.info('Version:', buildInfo.version);
   logger.info('Start http server...');
   const app = new Koa();
+
   app.use(async (ctx, next) => {
     if (ctx.request.method !== 'HEAD') {
       logger.info(`  <-- IP ${ctx.get('X-Forwarded-For')}`);
     }
     await next();
   });
+
   app.use(koaLogger((str, args) => {
     if (args[1] !== 'HEAD') {
       logger.info(str);
@@ -37,12 +38,6 @@ export async function startServer() {
   }));
 
   app.use(cors());
-
-  const liveCheckRouter = new Router();
-  liveCheckRouter.head('/ping', (ctx) => ctx.body = 'ok');
-  liveCheckRouter.post('/ping', (ctx) => ctx.body = 'ok');
-  app.use(liveCheckRouter.routes());
-  app.use(liveCheckRouter.allowedMethods());
 
   app.use(async (ctx) => {
 
@@ -62,7 +57,6 @@ export async function startServer() {
       }
     }
   });
-
 
   app.listen(port);
   logger.info('Server listening port: ' + port);
