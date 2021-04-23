@@ -26,9 +26,9 @@ hss
 
 -p    --port     server port. default 80
 
--i    --index    index.html file. default index.html
+-i    --hssServer    hssServer.html file. default hssServer.html
 
--p4   --page404  404 file. default index.html
+-p4   --page404  404 file. default hssServer.html
 
 ```
 

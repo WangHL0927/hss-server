@@ -12,11 +12,11 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
     "sourceMap": false,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
   },
   "include": [
-    "index.ts",
-    "/src/**/*",
+    "hss-server.ts",
+    "/src/**/*"
   ],
   "exclude": [
     "node_modules"
