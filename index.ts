@@ -6,6 +6,8 @@ import cors from '@koa/cors';
 import koaLogger from 'koa-logger';
 import { getLogger } from 'log4js';
 import send from 'koa-send';
+import responseTime from 'koa-response-time';
+
 
 import minimist from 'minimist';
 
@@ -24,6 +26,10 @@ export async function startServer() {
   logger.info('Start http server...');
   const app = new Koa();
 
+  app.use(responseTime());
+  app.use(cors());
+
+  // slb ip.
   app.use(async (ctx, next) => {
     if (ctx.request.method !== 'HEAD') {
       logger.info(`  <-- IP ${ctx.get('X-Forwarded-For')}`);
@@ -36,8 +42,6 @@ export async function startServer() {
       logger.info(str);
     }
   }));
-
-  app.use(cors());
 
   app.use(async (ctx) => {
 
