@@ -8,8 +8,7 @@
   },
   "scripts": {
     "start": "export NODE_ENV=dev && ts-node-dev index.ts",
-    "build": "tsc",
-    "test": "ts-node ."
+    "build": "tsc"
   },
   "files": [
     "./dist"
