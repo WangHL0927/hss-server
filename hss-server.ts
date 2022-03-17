@@ -4,21 +4,35 @@ import Koa from 'koa';
 import * as buildInfo from './package.json';
 import cors from '@koa/cors';
 import koaLogger from 'koa-logger';
-import { getLogger } from 'log4js';
+import {getLogger} from 'log4js';
 import send from 'koa-send';
 import responseTime from 'koa-response-time';
-
+import etag from 'koa-etag';
+import * as fs from 'fs';
 
 import minimist from 'minimist';
+import * as path from 'path';
 
 const argv = minimist(process.argv.slice(2));
 const root = argv.r || argv.root || '.';
 const port = argv.p || argv.port || 80;
 const index = argv.i || argv.index || 'index.html';
+
+// spa option.
 const page404 = argv.p4 || argv.page404 || 'index.html';
 
+const logLevel = argv.ll || argv.log || 'info';
+
 const logger = getLogger('http');
-logger.level = 'info';
+
+if (['info', 'debug'].includes(logLevel)) {
+  logger.level = logLevel;
+} else {
+  logger.level = 'info';
+}
+
+logger.debug(argv)
+logger.debug(port, root, index, page404, logLevel)
 
 export async function startServer() {
   logger.info('Name:', buildInfo.name);
@@ -28,11 +42,12 @@ export async function startServer() {
 
   app.use(responseTime());
   app.use(cors());
+  app.use(etag());
 
-  // slb ip.
   app.use(async (ctx, next) => {
     if (ctx.request.method !== 'HEAD') {
-      logger.info(`  <-- IP ${ctx.get('X-Forwarded-For')}`);
+      // alibaba slb ip.
+      logger.info(`  <-- IP ${ctx.get('X-Forwarded-For') || ctx.request.ip}`);
     }
     await next();
   });
@@ -43,8 +58,16 @@ export async function startServer() {
     }
   }));
 
-  app.use(async (ctx) => {
+  app.use(async (ctx, next) => {
+    if (ctx.fresh) {
+      ctx.status = 304;
+      return;
+    } else {
+      await next();
+    }
+  })
 
+  app.use(async (ctx) => {
     const opts = {
       index: index,
       root: root,
